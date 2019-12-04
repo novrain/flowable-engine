@@ -765,6 +765,12 @@ public interface TaskService {
 
     /** Add a comment to a task and/or process instance with a custom type. */
     Comment addComment(String taskId, String processInstanceId, String type, String message);
+
+    /** Add a comment to a task and/or process instance. */
+    Comment addCommentByUser(String taskId, String processInstanceId, String message, String userId);
+
+    /** Add a comment to a task and/or process instance with a custom type. */
+    Comment addCommentByUser(String taskId, String processInstanceId, String type, String message, String userId);
     
     /** Update a comment to a task and/or process instance. */
     void saveComment(Comment comment);

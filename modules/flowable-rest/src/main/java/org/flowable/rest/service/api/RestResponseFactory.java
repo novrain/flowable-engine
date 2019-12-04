@@ -55,6 +55,7 @@ import org.flowable.engine.task.Event;
 import org.flowable.eventsubscription.api.EventSubscription;
 import org.flowable.form.api.FormDefinition;
 import org.flowable.identitylink.api.IdentityLink;
+import org.flowable.identitylink.api.IdentityLinkInfo;
 import org.flowable.identitylink.api.history.HistoricIdentityLink;
 import org.flowable.idm.api.Group;
 import org.flowable.idm.api.User;
@@ -167,6 +168,19 @@ public class RestResponseFactory {
                 response.addVariable(createRestVariable(name, variableMap.get(name), RestVariableScope.GLOBAL, task.getId(), VARIABLE_TASK, false, urlBuilder));
             }
         }
+        
+        if(task.getIdentityLinks() != null) {
+            List<? extends IdentityLinkInfo> linkInfos = task.getIdentityLinks();
+            for(IdentityLinkInfo linkInfo: linkInfos) {
+                RestIdentityLink restLink = new RestIdentityLink();
+                restLink.setId(linkInfo.getId());
+                restLink.setGroup(linkInfo.getGroupId());
+                restLink.setType(linkInfo.getType());
+                restLink.setUser(linkInfo.getUserId());
+                response.addIdentityLink(restLink);
+            }
+        }
+        
         if (task.getTaskLocalVariables() != null) {
             Map<String, Object> variableMap = task.getTaskLocalVariables();
             for (String name : variableMap.keySet()) {
@@ -416,7 +430,9 @@ public class RestResponseFactory {
         RestUrlBuilder urlBuilder = createUrlBuilder();
         List<RestIdentityLink> responseList = new ArrayList<>();
         for (IdentityLink instance : links) {
-            responseList.add(createRestIdentityLink(instance, urlBuilder));
+            RestIdentityLink restLink = createRestIdentityLink(instance, urlBuilder);
+            restLink.setId(instance.getId());
+            responseList.add(restLink);
         }
         return responseList;
     }
@@ -838,8 +854,20 @@ public class RestResponseFactory {
                 result.addVariable(createRestVariable(name, variableMap.get(name), RestVariableScope.LOCAL, taskInstance.getId(), VARIABLE_HISTORY_TASK, false, urlBuilder));
             }
         }
+        
+        if(taskInstance.getIdentityLinks() != null) {
+            List<? extends IdentityLinkInfo> linkInfos = taskInstance.getIdentityLinks();
+            for(IdentityLinkInfo linkInfo: linkInfos) {
+                RestIdentityLink restLink = new RestIdentityLink();
+                restLink.setId(linkInfo.getId());
+                restLink.setGroup(linkInfo.getGroupId());
+                restLink.setType(linkInfo.getType());
+                restLink.setUser(linkInfo.getUserId());
+                result.addIdentityLink(restLink);
+            }
+        }
         return result;
-    }
+    } 
 
     public List<HistoricTaskLogEntryResponse> createHistoricTaskLogEntryResponseList(List<HistoricTaskLogEntry> logEntries) {
         RestUrlBuilder urlBuilder = createUrlBuilder();

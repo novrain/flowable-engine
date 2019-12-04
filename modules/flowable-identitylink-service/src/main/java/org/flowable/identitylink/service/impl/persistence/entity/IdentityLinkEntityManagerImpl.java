@@ -140,12 +140,13 @@ public class IdentityLinkEntityManagerImpl extends AbstractEntityManager<Identit
     }
 
     @Override
-    public IdentityLinkEntity addTaskIdentityLink(String taskId, String userId, String groupId, String type) {
+    public IdentityLinkEntity addTaskIdentityLink(String taskId, String userId, String groupId, String type, String processInstanceId) {
         IdentityLinkEntity identityLinkEntity = identityLinkDataManager.create();
         identityLinkEntity.setTaskId(taskId);
         identityLinkEntity.setUserId(userId);
         identityLinkEntity.setGroupId(groupId);
         identityLinkEntity.setType(type);
+        identityLinkEntity.setProcessInstanceId(processInstanceId);
         insert(identityLinkEntity);
         
         return identityLinkEntity;
@@ -175,30 +176,30 @@ public class IdentityLinkEntityManagerImpl extends AbstractEntityManager<Identit
     }
 
     @Override
-    public IdentityLinkEntity addCandidateUser(String taskId, String userId) {
-        return addTaskIdentityLink(taskId, userId, null, IdentityLinkType.CANDIDATE);
+    public IdentityLinkEntity addCandidateUser(String taskId, String userId, String processInstanceId) {
+        return addTaskIdentityLink(taskId, userId, null, IdentityLinkType.CANDIDATE, processInstanceId);
     }
 
     @Override
-    public List<IdentityLinkEntity> addCandidateUsers(String taskId, Collection<String> candidateUsers) {
+    public List<IdentityLinkEntity> addCandidateUsers(String taskId, Collection<String> candidateUsers, String processInstanceId) {
         List<IdentityLinkEntity> identityLinks = new ArrayList<>();
         for (String candidateUser : candidateUsers) {
-            identityLinks.add(addCandidateUser(taskId, candidateUser));
+            identityLinks.add(addCandidateUser(taskId, candidateUser, processInstanceId));
         }
         
         return identityLinks;
     }
 
     @Override
-    public IdentityLinkEntity addCandidateGroup(String taskId, String groupId) {
-        return addTaskIdentityLink(taskId, null, groupId, IdentityLinkType.CANDIDATE);
+    public IdentityLinkEntity addCandidateGroup(String taskId, String groupId, String processInstanceId) {
+        return addTaskIdentityLink(taskId, null, groupId, IdentityLinkType.CANDIDATE, processInstanceId);
     }
 
     @Override
-    public List<IdentityLinkEntity> addCandidateGroups(String taskId, Collection<String> candidateGroups) {
+    public List<IdentityLinkEntity> addCandidateGroups(String taskId, Collection<String> candidateGroups, String processInstanceId) {
         List<IdentityLinkEntity> identityLinks = new ArrayList<>();
         for (String candidateGroup : candidateGroups) {
-            identityLinks.add(addCandidateGroup(taskId, candidateGroup));
+            identityLinks.add(addCandidateGroup(taskId, candidateGroup, processInstanceId));
         }
         return identityLinks;
     }

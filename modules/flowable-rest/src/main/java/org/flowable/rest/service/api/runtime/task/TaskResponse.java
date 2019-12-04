@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.flowable.common.rest.util.DateToStringSerializer;
+import org.flowable.rest.service.api.engine.RestIdentityLink;
 import org.flowable.rest.service.api.engine.variable.RestVariable;
 import org.flowable.task.api.DelegationState;
 import org.flowable.task.api.Task;
@@ -65,6 +66,8 @@ public class TaskResponse {
     protected String processDefinitionUrl;
 
     protected List<RestVariable> variables = new ArrayList<>();
+
+    protected List<RestIdentityLink> identityLinks = new ArrayList<>();
 
     public TaskResponse() {
     }
@@ -309,6 +312,18 @@ public class TaskResponse {
 
     public void addVariable(RestVariable variable) {
         variables.add(variable);
+    }
+
+    public List<RestIdentityLink> getIdentityLinks() {
+        return identityLinks;
+    }
+
+    public void setIdentityLinks(List<RestIdentityLink> identityLinks) {
+        this.identityLinks = identityLinks;
+    }
+
+    public void addIdentityLink(RestIdentityLink identityLink) {
+        identityLinks.add(identityLink);
     }
 
     @ApiModelProperty(example = "12")

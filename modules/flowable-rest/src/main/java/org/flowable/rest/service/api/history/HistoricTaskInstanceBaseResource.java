@@ -150,6 +150,9 @@ public class HistoricTaskInstanceBaseResource {
         if (queryRequest.getTaskInvolvedUser() != null) {
             query.taskInvolvedUser(queryRequest.getTaskInvolvedUser());
         }
+        if (queryRequest.getTaskInvolvedGroups() != null) {
+            query.taskInvolvedGroups(queryRequest.getTaskInvolvedGroups());
+        }
         if (queryRequest.getTaskPriority() != null) {
             query.taskPriority(queryRequest.getTaskPriority());
         }
@@ -221,6 +224,11 @@ public class HistoricTaskInstanceBaseResource {
         if (queryRequest.getIncludeTaskLocalVariables() != null) {
             if (queryRequest.getIncludeTaskLocalVariables()) {
                 query.includeTaskLocalVariables();
+            }
+        }
+        if (queryRequest.getIncludeIdentityLinks() != null) {
+            if (queryRequest.getIncludeIdentityLinks()) {
+                query.includeIdentityLinks();
             }
         }
         if (queryRequest.getIncludeProcessVariables() != null) {

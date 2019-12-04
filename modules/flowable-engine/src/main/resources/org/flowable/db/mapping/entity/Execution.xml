@@ -808,15 +808,23 @@
       <if test="nameLikeIgnoreCase != null">
         and lower(RES.NAME_) like #{nameLikeIgnoreCase}${wildcardEscapeClause}
       </if>
-      <if test="involvedUser != null">
-        and EXISTS(select ID_ from ${prefix}ACT_RU_IDENTITYLINK I where I.PROC_INST_ID_ = RES.ID_ and I.USER_ID_ = #{involvedUser})
-      </if>
-      <if test="involvedGroups != null">
-        and EXISTS(
-          select ID_ from ${prefix}ACT_RU_IDENTITYLINK I where I.PROC_INST_ID_ = RES.ID_ and I.GROUP_ID_ in
-          <foreach item="involvedGroup" index="index" collection="involvedGroups" open="(" separator="," close=")">
-              #{involvedGroup}
-          </foreach>
+      <if test="involvedUser != null || involvedGroups != null">
+        and EXISTS(select ID_ from ${prefix}ACT_RU_IDENTITYLINK I where I.PROC_INST_ID_ = RES.ID_
+             and
+            (
+              <if test="involvedUser != null">
+                I.USER_ID_ like #{involvedUser}${wildcardEscapeClause}
+              </if>
+              <if test="involvedUser != null &amp;&amp; involvedGroups != null &amp;&amp; involvedGroups.size() &gt; 0">
+                or
+              </if>
+              <if test="involvedGroups != null &amp;&amp; involvedGroups.size() &gt; 0">
+              <foreach item="group" index="index" collection="involvedGroups"
+                         open=""  separator=" or " close="">
+                  I.GROUP_ID_ like #{group}${wildcardEscapeClause}
+                </foreach>
+              </if>
+            )
         )
       </if>
       <!-- PLEASE NOTE: If you change anything have a look into the HistoricVariableInstance & HistoricProcessInstance, the same query object is used there! -->

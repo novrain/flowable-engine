@@ -48,6 +48,7 @@ public class ProcessInstanceQueryRequest extends PaginateRequest {
     private String subProcessInstanceId;
     private Boolean excludeSubprocesses;
     private String involvedUser;
+    private Set<String> involvedGroups;
     private String startedBy;
     private Date startedBefore;
     private Date startedAfter;
@@ -242,6 +243,14 @@ public class ProcessInstanceQueryRequest extends PaginateRequest {
 
     public void setInvolvedUser(String involvedUser) {
         this.involvedUser = involvedUser;
+    }
+    
+    public Set<String> getInvolvedGroups() {
+        return involvedGroups;
+    }
+
+    public void setInvolvedGroups(Set<String> involvedGroups) {
+        this.involvedGroups = involvedGroups;
     }
 
     public Boolean getSuspended() {

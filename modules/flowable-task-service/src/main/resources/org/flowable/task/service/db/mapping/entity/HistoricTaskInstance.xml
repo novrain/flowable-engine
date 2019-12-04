@@ -850,18 +850,23 @@
             )
         )
       </if>
-      <if test="involvedUser != null">
-        and (
-          EXISTS(select LINK.ID_ from ${prefix}ACT_HI_IDENTITYLINK LINK where LINK.USER_ID_ = #{involvedUser} and LINK.TASK_ID_ = RES.ID_)
-          or RES.ASSIGNEE_ = #{involvedUser}
-          or RES.OWNER_ = #{involvedUser}
-          )
-      </if>
-      <if test="involvedGroups != null">
-        and EXISTS(select LINK.ID_ from ${prefix}ACT_HI_IDENTITYLINK LINK where LINK.TASK_ID_ = RES.ID_ and LINK.GROUP_ID_ in
-        <foreach item="involvedGroup" index="index" collection="involvedGroups" open="(" separator="," close=")">
-          #{involvedGroup}
-        </foreach>
+      <if test="involvedUser != null || involvedGroups != null">
+        and exists(select LINK.ID_ from ${prefix}ACT_HI_IDENTITYLINK LINK where LINK.TASK_ID_ = RES.ID_
+            and
+            (
+              <if test="involvedUser != null">
+                LINK.USER_ID_ like #{involvedUser}${wildcardEscapeClause}
+              </if>
+              <if test="involvedUser != null &amp;&amp; involvedGroups != null &amp;&amp; involvedGroups.size() &gt; 0">
+                or
+              </if>
+              <if test="involvedGroups != null &amp;&amp; involvedGroups.size() &gt; 0">
+                <foreach item="group" index="index" collection="involvedGroups"
+                         open="" separator=" or " close="">                  
+                LINK.GROUP_ID_ like #{group}${wildcardEscapeClause}
+                </foreach>
+              </if>
+            )
         )
       </if>
       <foreach item="queryVar" collection="queryVariableValues" index="index">

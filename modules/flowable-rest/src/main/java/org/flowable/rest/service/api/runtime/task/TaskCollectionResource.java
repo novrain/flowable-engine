@@ -15,8 +15,10 @@ package org.flowable.rest.service.api.runtime.task;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -87,7 +89,8 @@ public class TaskCollectionResource extends TaskBaseResource {
             @ApiImplicitParam(name = "withoutDueDate", dataType = "boolean", value = "Only return tasks which do not have a due date. The property is ignored if the value is false.", paramType = "query"),
             @ApiImplicitParam(name = "excludeSubTasks", dataType = "boolean", value = "Only return tasks that are not a subtask of another task.", paramType = "query"),
             @ApiImplicitParam(name = "active", dataType = "boolean", value = "If true, only return tasks that are not suspended (either part of a process that is not suspended or not part of a process at all). If false, only tasks that are part of suspended process instances are returned.", paramType = "query"),
-            @ApiImplicitParam(name = "includeTaskLocalVariables", dataType = "boolean", value = "Indication to include task local variables in the result.", paramType = "query"),
+            @ApiImplicitParam(name = "includeTaskLocalVariables", dataType = "boolean", value = "Indication to include task local variables in the result.", paramType = "query"),            @ApiImplicitParam(name = "includeProcessVariables", dataType = "boolean", value = "Indication to include process variables in the result.", paramType = "query"),
+            @ApiImplicitParam(name = "includeIdentityLinks", dataType = "boolean", value = "Indication to include identity links in the result.", paramType = "query"),
             @ApiImplicitParam(name = "includeProcessVariables", dataType = "boolean", value = "Indication to include process variables in the result.", paramType = "query"),
             @ApiImplicitParam(name = "scopeDefinitionId", dataType = "string", value = "Only return tasks with the given scopeDefinitionId.", paramType = "query"),
             @ApiImplicitParam(name = "scopeId", dataType = "string", value = "Only return tasks with the given scopeId.", paramType = "query"),
@@ -166,6 +169,13 @@ public class TaskCollectionResource extends TaskBaseResource {
 
         if (requestParams.containsKey("involvedUser")) {
             request.setInvolvedUser(requestParams.get("involvedUser"));
+        }
+        
+        if (requestParams.containsKey("involvedGroups")) {
+            String[] involvedGroups = requestParams.get("involvedGroups").split(",");
+            Set<String> groups = new HashSet<>(involvedGroups.length);
+            Collections.addAll(groups, involvedGroups);
+            request.setInvolvedGroups(groups);
         }
 
         if (requestParams.containsKey("candidateGroup")) {
@@ -261,6 +271,10 @@ public class TaskCollectionResource extends TaskBaseResource {
 
         if (requestParams.containsKey("includeTaskLocalVariables")) {
             request.setIncludeTaskLocalVariables(Boolean.valueOf(requestParams.get("includeTaskLocalVariables")));
+        }
+
+        if (requestParams.containsKey("includeIdentityLinks")) {
+            request.setIncludeIdentityLinks(Boolean.valueOf(requestParams.get("includeIdentityLinks")));
         }
 
         if (requestParams.containsKey("includeProcessVariables")) {

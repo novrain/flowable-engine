@@ -15,6 +15,7 @@ package org.flowable.rest.service.api.runtime.task;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.flowable.common.rest.api.PaginateRequest;
 import org.flowable.rest.service.api.engine.variable.QueryVariable;
@@ -44,6 +45,7 @@ public class TaskQueryRequest extends PaginateRequest {
     private String candidateGroup;
     private List<String> candidateGroupIn;
     private String involvedUser;
+    private Set<String> involvedGroups;
     private String processInstanceId;
     private String processInstanceIdWithChildren;
     private String processInstanceBusinessKey;
@@ -67,6 +69,7 @@ public class TaskQueryRequest extends PaginateRequest {
     private Boolean active;
     private Boolean includeTaskLocalVariables;
     private Boolean includeProcessVariables;
+    private Boolean includeIdentityLinks;
     private String scopeDefinitionId;
     private String scopeId;
     private String scopeType;
@@ -213,6 +216,14 @@ public class TaskQueryRequest extends PaginateRequest {
 
     public void setInvolvedUser(String involvedUser) {
         this.involvedUser = involvedUser;
+    }
+    
+    public Set<String> getInvolvedGroups() {
+        return involvedGroups;
+    }
+
+    public void setInvolvedGroups(Set<String> involvedGroups) {
+        this.involvedGroups = involvedGroups;
     }
 
     public String getProcessInstanceId() {
@@ -479,5 +490,13 @@ public class TaskQueryRequest extends PaginateRequest {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public Boolean getIncludeIdentityLinks() {
+        return includeIdentityLinks;
+    }
+
+    public void setIncludeIdentityLinks(Boolean includeIdentityLinks) {
+        this.includeIdentityLinks = includeIdentityLinks;
     }
 }

@@ -79,7 +79,8 @@ public class HistoricTaskInstanceCollectionResource extends HistoricTaskInstance
             @ApiImplicitParam(name = "taskCreatedOn", dataType = "string", format="date-time", value = "Return only historic task instances that were created on this date.", paramType = "query"),
             @ApiImplicitParam(name = "taskCreatedBefore", dataType = "string", format="date-time", value = "Return only historic task instances that were created before this date.", paramType = "query"),
             @ApiImplicitParam(name = "taskCreatedAfter", dataType = "string", format="date-time", value = "Return only historic task instances that were created after this date.", paramType = "query"),
-            @ApiImplicitParam(name = "includeTaskLocalVariables", dataType = "boolean", value = "An indication if the historic task instance local variables should be returned as well.", paramType = "query"),
+            @ApiImplicitParam(name = "includeTaskLocalVariables", dataType = "boolean", value = "An indication if the historic task instance local variables should be returned as well.", paramType = "query"),            @ApiImplicitParam(name = "includeTaskLocalVariables", dataType = "boolean", value = "An indication if the historic task instance local variables should be returned as well.", paramType = "query"),
+            @ApiImplicitParam(name = "includeIdentityLinks", dataType = "boolean", value = "An indication if the historic task instance indentity links should be returned as well.", paramType = "query"),
             @ApiImplicitParam(name = "includeProcessVariables", dataType = "boolean", value = "An indication if the historic task instance global variables should be returned as well.", paramType = "query"),
             @ApiImplicitParam(name = "scopeDefinitionId", dataType = "string", value = "Only return historic task instances with the given scopeDefinitionId.", paramType = "query"),
             @ApiImplicitParam(name = "scopeId", dataType = "string", value = "Only return historic task instances with the given scopeId.", paramType = "query"),
@@ -255,6 +256,10 @@ public class HistoricTaskInstanceCollectionResource extends HistoricTaskInstance
 
         if (allRequestParams.get("includeTaskLocalVariables") != null) {
             queryRequest.setIncludeTaskLocalVariables(Boolean.valueOf(allRequestParams.get("includeTaskLocalVariables")));
+        }
+
+        if (allRequestParams.get("includeIdentityLinks") != null) {
+            queryRequest.setIncludeIdentityLinks(Boolean.valueOf(allRequestParams.get("includeIdentityLinks")));
         }
 
         if (allRequestParams.get("includeProcessVariables") != null) {

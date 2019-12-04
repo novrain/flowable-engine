@@ -36,19 +36,19 @@ public interface IdentityLinkService {
     
     List<IdentityLinkEntity> findIdentityLinksByScopeDefinitionIdAndType(String scopeDefinitionId, String scopeType);
     
-    IdentityLinkEntity addCandidateUser(String taskId, String userId);
+    IdentityLinkEntity addCandidateUser(String taskId, String userId, String processInstanceId);
     
-    List<IdentityLinkEntity> addCandidateUsers(String taskId, Collection<String> candidateUsers);
+    List<IdentityLinkEntity> addCandidateUsers(String taskId, Collection<String> candidateUsers, String processInstanceId);
     
-    IdentityLinkEntity addCandidateGroup(String taskId, String groupId);
+    IdentityLinkEntity addCandidateGroup(String taskId, String groupId, String processInstanceId);
     
-    List<IdentityLinkEntity> addCandidateGroups(String taskId, Collection<String> candidateGroups);
+    List<IdentityLinkEntity> addCandidateGroups(String taskId, Collection<String> candidateGroups, String processInstanceId);
     
     IdentityLinkEntity createProcessInstanceIdentityLink(String processInstanceId, String userId, String groupId, String type);
     
     IdentityLinkEntity createScopeIdentityLink(String scopeDefinitionId, String scopeId, String scopeType, String userId, String groupId, String type);
     
-    IdentityLinkEntity createTaskIdentityLink(String taskId, String userId, String groupId, String type);
+    IdentityLinkEntity createTaskIdentityLink(String taskId, String userId, String groupId, String type, String processInstanceId);
     
     IdentityLinkEntity createProcessDefinitionIdentityLink(String processDefinitionId, String userId, String groupId);
     

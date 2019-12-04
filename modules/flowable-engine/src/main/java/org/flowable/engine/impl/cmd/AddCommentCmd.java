@@ -38,18 +38,21 @@ public class AddCommentCmd implements Command<Comment> {
     protected String processInstanceId;
     protected String type;
     protected String message;
+    protected String userId;
 
-    public AddCommentCmd(String taskId, String processInstanceId, String message) {
+    public AddCommentCmd(String taskId, String processInstanceId, String message, String userId) {
         this.taskId = taskId;
         this.processInstanceId = processInstanceId;
         this.message = message;
+        this.userId = userId;
     }
 
-    public AddCommentCmd(String taskId, String processInstanceId, String type, String message) {
+    public AddCommentCmd(String taskId, String processInstanceId, String type, String message, String userId) {
         this.taskId = taskId;
         this.processInstanceId = processInstanceId;
         this.type = type;
         this.message = message;
+        this.userId = userId;
     }
 
     @Override
@@ -73,13 +76,13 @@ public class AddCommentCmd implements Command<Comment> {
         if (processInstanceId != null) {
             execution = CommandContextUtil.getExecutionEntityManager(commandContext).findById(processInstanceId);
 
-            if (execution == null) {
-                throw new FlowableObjectNotFoundException("execution " + processInstanceId + " doesn't exist", Execution.class);
-            }
-
-            if (execution.isSuspended()) {
-                throw new FlowableException(getSuspendedExceptionMessage());
-            }
+//            if (execution == null) {
+//                throw new FlowableObjectNotFoundException("execution " + processInstanceId + " doesn't exist", Execution.class);
+//            }
+//
+//            if (execution.isSuspended()) {
+//                throw new FlowableException(getSuspendedExceptionMessage());
+//            }
         }
 
         String processDefinitionId = null;
@@ -93,8 +96,9 @@ public class AddCommentCmd implements Command<Comment> {
             Flowable5CompatibilityHandler compatibilityHandler = Flowable5Util.getFlowable5CompatibilityHandler();
             return compatibilityHandler.addComment(taskId, processInstanceId, type, message);
         }
-
-        String userId = Authentication.getAuthenticatedUserId();
+        if(userId == null) {
+            userId = Authentication.getAuthenticatedUserId();
+        }
         CommentEntity comment = CommandContextUtil.getCommentEntityManager(commandContext).create();
         comment.setUserId(userId);
         comment.setType((type == null) ? CommentEntity.TYPE_COMMENT : type);

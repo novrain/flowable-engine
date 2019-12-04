@@ -353,10 +353,6 @@ public class ContentItemCollectionResource extends ContentItemBaseResource {
             }
         }
 
-        if (contentItem.getName() == null) {
-            throw new FlowableIllegalArgumentException("Content item name is required.");
-        }
-
         if (request.getFileMap().size() == 0) {
             throw new FlowableIllegalArgumentException("Content item content is required.");
         }
@@ -369,6 +365,14 @@ public class ContentItemCollectionResource extends ContentItemBaseResource {
 
         if (file == null) {
             throw new FlowableIllegalArgumentException("Content item file is required.");
+        }
+
+        if (contentItem.getName() == null) {
+            contentItem.setName(file.getOriginalFilename());
+        }
+        
+        if (contentItem.getMimeType() == null) {
+            contentItem.setMimeType(file.getContentType());
         }
 
         try {

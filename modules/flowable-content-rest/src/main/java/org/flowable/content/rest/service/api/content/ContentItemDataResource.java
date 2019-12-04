@@ -14,6 +14,8 @@
 package org.flowable.content.rest.service.api.content;
 
 import java.io.InputStream;
+import java.net.URLEncoder;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -62,7 +64,7 @@ public class ContentItemDataResource extends ContentItemBaseResource {
             @ApiResponse(code = 404, message = "Indicates the content item was not found or the content item does not have a binary stream available. Status message provides additional information.")
     })
     @GetMapping(value = "/content-service/content-items/{contentItemId}/data")
-    public ResponseEntity<byte[]> getContentItemData(@ApiParam(name = "contentItemId") @PathVariable("contentItemId") String contentItemId, HttpServletResponse response) {
+    public ResponseEntity<byte[]> getContentItemData(@ApiParam(name = "contentItemId") @PathVariable("contentItemId") String contentItemId, HttpServletRequest request, HttpServletResponse response) {
 
         ContentItem contentItem = getContentItemFromRequest(contentItemId);
         if (!contentItem.isContentAvailable()) {
@@ -82,6 +84,19 @@ public class ContentItemDataResource extends ContentItemBaseResource {
                 responseHeaders.set("Content-Type", contentItem.getMimeType());
             } catch (Exception e) {
                 // ignore if unknown media type
+            }
+        }
+        
+        Map<String, String[]> paramMap = request.getParameterMap();
+        String[] ops = paramMap.get("op");
+        if (ops != null && ops.length > 0) {
+            String op = ops[0];
+            if (op.equalsIgnoreCase("download")) {
+                try {
+                    responseHeaders.set("Content-Disposition", " attachment; filename*=UTF-8''" + URLEncoder.encode(contentItem.getName(), "UTF-8"));
+                } catch (Exception e) {
+                    // ignore if unknown media type
+                }
             }
         }
 

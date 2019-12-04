@@ -177,6 +177,9 @@ public class TaskBaseResource {
         if (request.getInvolvedUser() != null) {
             taskQuery.taskInvolvedUser(request.getInvolvedUser());
         }
+        if (request.getInvolvedGroups() != null) {
+            taskQuery.taskInvolvedGroups(request.getInvolvedGroups());
+        }
         if (request.getCandidateGroup() != null) {
             taskQuery.taskCandidateGroup(request.getCandidateGroup());
         }
@@ -241,6 +244,12 @@ public class TaskBaseResource {
         if (request.getIncludeTaskLocalVariables() != null) {
             if (request.getIncludeTaskLocalVariables()) {
                 taskQuery.includeTaskLocalVariables();
+            }
+        }
+
+        if (request.getIncludeIdentityLinks() != null) {
+            if (request.getIncludeIdentityLinks()) {
+                taskQuery.includeIdentityLinks();
             }
         }
         if (request.getIncludeProcessVariables() != null) {

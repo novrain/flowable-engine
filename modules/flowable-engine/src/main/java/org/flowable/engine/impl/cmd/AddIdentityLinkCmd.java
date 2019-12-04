@@ -108,11 +108,11 @@ public class AddIdentityLinkCmd extends NeedsActiveTaskCmd<Void> {
             assignedToNoOne = identityId == null;
 
         } else if (IDENTITY_USER == identityIdType) {
-            IdentityLinkEntity identityLinkEntity = CommandContextUtil.getIdentityLinkService().createTaskIdentityLink(task.getId(), identityId, null, identityType);
+            IdentityLinkEntity identityLinkEntity = CommandContextUtil.getIdentityLinkService().createTaskIdentityLink(task.getId(), identityId, null, identityType, task.getProcessInstanceId());
             IdentityLinkUtil.handleTaskIdentityLinkAddition(task, identityLinkEntity);
             
         } else if (IDENTITY_GROUP == identityIdType) {
-            IdentityLinkEntity identityLinkEntity = CommandContextUtil.getIdentityLinkService().createTaskIdentityLink(task.getId(), null, identityId, identityType);
+            IdentityLinkEntity identityLinkEntity = CommandContextUtil.getIdentityLinkService().createTaskIdentityLink(task.getId(), null, identityId, identityType, task.getProcessInstanceId());
             IdentityLinkUtil.handleTaskIdentityLinkAddition(task, identityLinkEntity);
 
         }

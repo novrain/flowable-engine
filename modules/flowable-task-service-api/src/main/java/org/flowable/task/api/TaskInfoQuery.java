@@ -144,7 +144,7 @@ public interface TaskInfoQuery<T extends TaskInfoQuery<?, ?>, V extends TaskInfo
     /**
      * Only select tasks for which there exist an {@link IdentityLink} with the given Groups.
      */
-    T taskInvolvedGroups(Set<String> involvedGroup);
+    T taskInvolvedGroups(Set<String> involvedGroups);
 
     /**
      * Allows to select a task using {@link #taskCandidateGroup(String)} {@link #taskCandidateGroupIn(List)} or {@link #taskCandidateUser(String)} but ignore the assignee value instead of querying for an empty assignee.

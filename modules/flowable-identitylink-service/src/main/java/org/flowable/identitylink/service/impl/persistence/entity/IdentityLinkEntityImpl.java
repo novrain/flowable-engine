@@ -106,7 +106,7 @@ public class IdentityLinkEntityImpl extends AbstractIdentityLinkServiceNoRevisio
 
     @Override
     public void setUserId(String userId) {
-        if (this.groupId != null && userId != null) {
+        if (this.groupId != null && userId != null && this.groupId.length() != 0 && userId.length() != 0) {
             throw new FlowableException("Cannot assign a userId to a task assignment that already has a groupId");
         }
         this.userId = userId;
@@ -119,7 +119,7 @@ public class IdentityLinkEntityImpl extends AbstractIdentityLinkServiceNoRevisio
 
     @Override
     public void setGroupId(String groupId) {
-        if (this.userId != null && groupId != null) {
+        if (this.userId != null && groupId != null && groupId.length() != 0 && this.userId.length() != 0) {
             throw new FlowableException("Cannot assign a groupId to a task assignment that already has a userId");
         }
         this.groupId = groupId;

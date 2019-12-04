@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.flowable.common.engine.impl.context.Context;
 import org.flowable.identitylink.service.impl.persistence.entity.HistoricIdentityLinkEntity;
+import org.flowable.identitylink.service.impl.persistence.entity.IdentityLinkEntity;
 import org.flowable.task.service.TaskServiceConfiguration;
 import org.flowable.task.service.impl.util.CommandContextUtil;
 import org.flowable.variable.service.impl.persistence.entity.HistoricVariableInitializingList;
@@ -63,7 +64,7 @@ public class HistoricTaskInstanceEntityImpl extends AbstractTaskServiceEntity im
     protected String tenantId = TaskServiceConfiguration.NO_TENANT_ID;
     protected Date lastUpdateTime;
     protected List<HistoricVariableInstanceEntity> queryVariables;
-    protected List<HistoricIdentityLinkEntity> queryIdentityLinks;
+    protected List<HistoricIdentityLinkEntity> queryIdentityLinks = new ArrayList<HistoricIdentityLinkEntity>();
     protected List<HistoricIdentityLinkEntity> identityLinks = new ArrayList<>();
     protected boolean isIdentityLinksInitialized;
 

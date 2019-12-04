@@ -118,6 +118,9 @@ public class HistoricProcessInstanceBaseResource {
         if (queryRequest.getInvolvedUser() != null) {
             query.involvedUser(queryRequest.getInvolvedUser());
         }
+        if (queryRequest.getInvolvedGroups() != null) {
+            query.involvedGroups(queryRequest.getInvolvedGroups());
+        }
         if (queryRequest.getSuperProcessInstanceId() != null) {
             query.superProcessInstanceId(queryRequest.getSuperProcessInstanceId());
         }

@@ -15,6 +15,7 @@ package org.flowable.rest.service.api.runtime.process;
 
 import static org.flowable.common.rest.api.PaginateListUtil.paginateList;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -128,6 +129,10 @@ public class BaseProcessInstanceResource {
         }
         if (queryRequest.getInvolvedUser() != null) {
             query.involvedUser(queryRequest.getInvolvedUser());
+        }
+        
+        if (queryRequest.getInvolvedGroups() != null) {
+            query.involvedGroups(queryRequest.getInvolvedGroups());
         }
         if (queryRequest.getSuspended() != null) {
             if (queryRequest.getSuspended()) {

@@ -61,23 +61,23 @@ public class IdentityLinkServiceImpl extends CommonServiceImpl<IdentityLinkServi
     }
     
     @Override
-    public IdentityLinkEntity addCandidateUser(String taskId, String userId) {
-        return getIdentityLinkEntityManager().addCandidateUser(taskId, userId);
+    public IdentityLinkEntity addCandidateUser(String taskId, String userId, String processInstanceId) {
+        return getIdentityLinkEntityManager().addCandidateUser(taskId, userId, processInstanceId);
     }
     
     @Override
-    public List<IdentityLinkEntity> addCandidateUsers(String taskId, Collection<String> candidateUsers) {
-        return getIdentityLinkEntityManager().addCandidateUsers(taskId, candidateUsers);
+    public List<IdentityLinkEntity> addCandidateUsers(String taskId, Collection<String> candidateUsers, String processInstanceId) {
+        return getIdentityLinkEntityManager().addCandidateUsers(taskId, candidateUsers, processInstanceId);
     }
     
     @Override
-    public IdentityLinkEntity addCandidateGroup(String taskId, String groupId) {
-        return getIdentityLinkEntityManager().addCandidateGroup(taskId, groupId);
+    public IdentityLinkEntity addCandidateGroup(String taskId, String groupId, String processInstanceId) {
+        return getIdentityLinkEntityManager().addCandidateGroup(taskId, groupId, processInstanceId);
     }
     
     @Override
-    public List<IdentityLinkEntity> addCandidateGroups(String taskId, Collection<String> candidateGroups) {
-        return getIdentityLinkEntityManager().addCandidateGroups(taskId, candidateGroups);
+    public List<IdentityLinkEntity> addCandidateGroups(String taskId, Collection<String> candidateGroups, String processInstanceId) {
+        return getIdentityLinkEntityManager().addCandidateGroups(taskId, candidateGroups, processInstanceId);
     }
     
     @Override
@@ -91,8 +91,8 @@ public class IdentityLinkServiceImpl extends CommonServiceImpl<IdentityLinkServi
     }
     
     @Override
-    public IdentityLinkEntity createTaskIdentityLink(String taskId, String userId, String groupId, String type) {
-        return getIdentityLinkEntityManager().addTaskIdentityLink(taskId, userId, groupId, type);
+    public IdentityLinkEntity createTaskIdentityLink(String taskId, String userId, String groupId, String type, String processInstanceId) {
+        return getIdentityLinkEntityManager().addTaskIdentityLink(taskId, userId, groupId, type, processInstanceId);
     }
     
     @Override

@@ -16,6 +16,7 @@ package org.flowable.rest.service.api.history;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.flowable.common.engine.api.FlowableIllegalArgumentException;
 import org.flowable.common.engine.api.FlowableObjectNotFoundException;
 import org.flowable.engine.HistoryService;
 import org.flowable.engine.TaskService;
@@ -28,6 +29,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -52,7 +55,7 @@ public class HistoricProcessInstanceCommentResource extends HistoricProcessInsta
 
     @Autowired
     protected TaskService taskService;
-    
+
     @ApiOperation(value = "Get a comment on a historic process instance", tags = { "History Process" }, notes = "")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Indicates the historic process instance and comment were found and the comment is returned."),
@@ -87,5 +90,30 @@ public class HistoricProcessInstanceCommentResource extends HistoricProcessInsta
 
         taskService.deleteComment(commentId);
         response.setStatus(HttpStatus.NO_CONTENT.value());
+    }
+
+    @ApiOperation(value = "Update a comment on a historic process instance", tags = {
+            "History Process" }, notes = "Parameter saveProcessInstanceId is optional, if true save process instance id of task with comment.")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Indicates the comment was updated and the result is returned."),
+            @ApiResponse(code = 400, message = "Indicates the comment is missing from the request."),
+            @ApiResponse(code = 404, message = "Indicates that the historic process instance could not be found.") })
+    @PutMapping(value = "/history/historic-process-instances/{processInstanceId}/comments/{commentId}", produces = "application/json")
+    public CommentResponse updateComment(@ApiParam(name = "processInstanceId") @PathVariable String processInstanceId, @ApiParam(name = "commentId") @PathVariable String commentId,
+            @RequestBody CommentResponse commentRequest, HttpServletRequest request, HttpServletResponse response) {
+        if (commentRequest.getMessage() == null) {
+            throw new FlowableIllegalArgumentException("Comment text is required.");
+        }
+        HistoricProcessInstance instance = getHistoricProcessInstanceFromRequest(processInstanceId);
+        Comment comment = taskService.getComment(commentId);
+        if (comment == null || comment.getProcessInstanceId() == null || !comment.getProcessInstanceId().equals(instance.getId())) {
+            throw new FlowableObjectNotFoundException("Process instance '" + instance.getId() + "' does not have a comment with id '" + commentId + "'.", Comment.class);
+        }
+        if (commentRequest.getId() == null || commentRequest.getId().equals(comment.getId())) {
+            comment.setFullMessage(commentRequest.getMessage());
+            taskService.saveComment(comment);
+        } else {
+            throw new FlowableIllegalArgumentException("Key provided in request body does not match the key in the resource URL.");
+        }
+        return restResponseFactory.createRestComment(comment);
     }
 }

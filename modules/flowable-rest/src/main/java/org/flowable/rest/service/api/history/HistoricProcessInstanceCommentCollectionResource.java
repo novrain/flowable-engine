@@ -51,8 +51,8 @@ public class HistoricProcessInstanceCommentCollectionResource extends HistoricPr
 
     @Autowired
     protected TaskService taskService;
-    
-    @ApiOperation(value = "List comments on a historic process instance", nickname="listHistoricProcessInstanceComments", tags = { "History Process" }, notes = "")
+
+    @ApiOperation(value = "List comments on a historic process instance", nickname = "listHistoricProcessInstanceComments", tags = { "History Process" }, notes = "")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Indicates the process instance was found and the comments are returned."),
             @ApiResponse(code = 404, message = "Indicates that the historic process instance could not be found.") })
@@ -77,7 +77,7 @@ public class HistoricProcessInstanceCommentCollectionResource extends HistoricPr
             throw new FlowableIllegalArgumentException("Comment text is required.");
         }
 
-        Comment createdComment = taskService.addComment(null, instance.getId(), comment.getMessage());
+        Comment createdComment = taskService.addCommentByUser(null, instance.getId(), comment.getMessage(), comment.getAuthor());
         response.setStatus(HttpStatus.CREATED.value());
 
         return restResponseFactory.createRestComment(createdComment);

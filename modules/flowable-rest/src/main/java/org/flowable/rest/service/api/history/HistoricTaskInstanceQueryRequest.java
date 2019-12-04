@@ -15,6 +15,7 @@ package org.flowable.rest.service.api.history;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.flowable.common.rest.api.PaginateRequest;
 import org.flowable.rest.service.api.engine.variable.QueryVariable;
@@ -52,6 +53,7 @@ public class HistoricTaskInstanceQueryRequest extends PaginateRequest {
     private String taskOwner;
     private String taskOwnerLike;
     private String taskInvolvedUser;
+    private Set<String> taskInvolvedGroups;
     private Integer taskPriority;
     private Integer taskMinPriority;
     private Integer taskMaxPriority;
@@ -70,6 +72,7 @@ public class HistoricTaskInstanceQueryRequest extends PaginateRequest {
     private Date taskCompletedAfter;
     private Boolean includeTaskLocalVariables;
     private Boolean includeProcessVariables;
+    private Boolean includeIdentityLinks;
     private List<QueryVariable> taskVariables;
     private List<QueryVariable> processVariables;
     private String scopeDefinitionId;
@@ -279,6 +282,14 @@ public class HistoricTaskInstanceQueryRequest extends PaginateRequest {
 
     public void setTaskInvolvedUser(String taskInvolvedUser) {
         this.taskInvolvedUser = taskInvolvedUser;
+    }
+
+    public Set<String> getTaskInvolvedGroups() {
+        return taskInvolvedGroups;
+    }
+
+    public void setTaskInvolvedGroups(Set<String> taskInvolvedGroups) {
+        this.taskInvolvedGroups = taskInvolvedGroups;
     }
 
     public Integer getTaskPriority() {
@@ -505,6 +516,14 @@ public class HistoricTaskInstanceQueryRequest extends PaginateRequest {
 
     public void setTaskCandidateGroup(String taskCandidateGroup) {
         this.taskCandidateGroup = taskCandidateGroup;
+    }
+
+    public Boolean getIncludeIdentityLinks() {
+        return includeIdentityLinks;
+    }
+
+    public void setIncludeIdentityLinks(Boolean includeIdentityLinks) {
+        this.includeIdentityLinks = includeIdentityLinks;
     }
 
 }

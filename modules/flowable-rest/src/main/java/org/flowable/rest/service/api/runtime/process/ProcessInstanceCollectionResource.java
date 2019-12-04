@@ -13,9 +13,12 @@
 
 package org.flowable.rest.service.api.runtime.process;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -159,7 +162,14 @@ public class ProcessInstanceCollectionResource extends BaseProcessInstanceResour
         if (allRequestParams.containsKey("involvedUser")) {
             queryRequest.setInvolvedUser(allRequestParams.get("involvedUser"));
         }
-
+        
+        if (allRequestParams.containsKey("involvedGroups")) {
+            String[] involvedGroups = allRequestParams.get("involvedGroups").split(",");
+            Set<String> groups = new HashSet<>(involvedGroups.length);
+            Collections.addAll(groups, involvedGroups);
+            queryRequest.setInvolvedGroups(groups);
+        }
+        
         if (allRequestParams.containsKey("suspended")) {
             queryRequest.setSuspended(Boolean.valueOf(allRequestParams.get("suspended")));
         }

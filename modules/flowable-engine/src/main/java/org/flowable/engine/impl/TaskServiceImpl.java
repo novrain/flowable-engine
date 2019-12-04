@@ -403,13 +403,24 @@ public class TaskServiceImpl extends CommonEngineServiceImpl<ProcessEngineConfig
 
     @Override
     public Comment addComment(String taskId, String processInstance, String message) {
-        return commandExecutor.execute(new AddCommentCmd(taskId, processInstance, message));
+        return commandExecutor.execute(new AddCommentCmd(taskId, processInstance, message, null));
     }
 
     @Override
     public Comment addComment(String taskId, String processInstance, String type, String message) {
-        return commandExecutor.execute(new AddCommentCmd(taskId, processInstance, type, message));
+        return commandExecutor.execute(new AddCommentCmd(taskId, processInstance, type, message, null));
     }
+
+    @Override
+    public Comment addCommentByUser(String taskId, String processInstance, String message, String userId) {
+        return commandExecutor.execute(new AddCommentCmd(taskId, processInstance, message, userId));
+    }
+
+    @Override
+    public Comment addCommentByUser(String taskId, String processInstance, String type, String message, String userId) {
+        return commandExecutor.execute(new AddCommentCmd(taskId, processInstance, type, message, userId));
+    }
+    
     
     @Override
     public void saveComment(Comment comment) {

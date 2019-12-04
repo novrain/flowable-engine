@@ -503,20 +503,26 @@
       <if test="deleted">
         and RES.DELETE_REASON_ IS NOT NULL
       </if>
-      <if test="involvedUser != null">
-        and (
-          exists(select LINK.USER_ID_ from ${prefix}ACT_HI_IDENTITYLINK LINK where USER_ID_ = #{involvedUser} and LINK.PROC_INST_ID_ = RES.ID_)
+      <if test="involvedUser != null || involvedGroups != null">
+        and EXISTS(select ID_ from ${prefix}ACT_HI_IDENTITYLINK I where I.PROC_INST_ID_ = RES.ID_
+             and
+            (
+              <if test="involvedUser != null">
+                I.USER_ID_ like #{involvedUser}${wildcardEscapeClause}
+              </if>
+              <if test="involvedUser != null &amp;&amp; involvedGroups != null &amp;&amp; involvedGroups.size() &gt; 0">
+                or
+              </if>
+              <if test="involvedGroups != null &amp;&amp; involvedGroups.size() &gt; 0">
+              <foreach item="group" index="index" collection="involvedGroups"
+                         open=""  separator=" or " close="">
+                  I.GROUP_ID_ like #{group}${wildcardEscapeClause}
+                </foreach>
+              </if>
+            )
         )
       </if>
-        <if test="involvedGroups != null">
-            and EXISTS(
-            select ID_ from ${prefix}ACT_HI_IDENTITYLINK LINK where LINK.PROC_INST_ID_ = RES.ID_ and LINK.GROUP_ID_ in
-            <foreach item="involvedGroup" index="index" collection="involvedGroups" open="(" separator="," close=")">
-                #{involvedGroup}
-            </foreach>
-            )
-        </if>
-        <if test="startedBy != null">
+      <if test="startedBy != null">
         and RES.START_USER_ID_ = #{startedBy}
       </if>
       <if test="superProcessInstanceId != null">

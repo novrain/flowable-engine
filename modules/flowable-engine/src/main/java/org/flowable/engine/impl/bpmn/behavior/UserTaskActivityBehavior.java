@@ -298,14 +298,14 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
                 Object value = groupIdExpr.getValue(execution);
                 if (value != null) {
                     if (value instanceof Collection) {
-                        List<IdentityLinkEntity> identityLinkEntities = CommandContextUtil.getIdentityLinkService().addCandidateGroups(task.getId(), (Collection) value);
+                        List<IdentityLinkEntity> identityLinkEntities = CommandContextUtil.getIdentityLinkService().addCandidateGroups(task.getId(), (Collection) value, task.getProcessInstanceId());
                         IdentityLinkUtil.handleTaskIdentityLinkAdditions(task, identityLinkEntities);
                         
                     } else {
                         String strValue = value.toString();
                         if (StringUtils.isNotEmpty(strValue)) {
                             List<String> candidates = extractCandidates(strValue);
-                            List<IdentityLinkEntity> identityLinkEntities = CommandContextUtil.getIdentityLinkService().addCandidateGroups(task.getId(), candidates);
+                            List<IdentityLinkEntity> identityLinkEntities = CommandContextUtil.getIdentityLinkService().addCandidateGroups(task.getId(), candidates, task.getProcessInstanceId());
                             IdentityLinkUtil.handleTaskIdentityLinkAdditions(task, identityLinkEntities);
                         }
                     }
@@ -319,14 +319,14 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
                 Object value = userIdExpr.getValue(execution);
                 if (value != null) {
                     if (value instanceof Collection) {
-                        List<IdentityLinkEntity> identityLinkEntities = CommandContextUtil.getIdentityLinkService().addCandidateUsers(task.getId(), (Collection) value);
+                        List<IdentityLinkEntity> identityLinkEntities = CommandContextUtil.getIdentityLinkService().addCandidateUsers(task.getId(), (Collection) value, task.getProcessInstanceId());
                         IdentityLinkUtil.handleTaskIdentityLinkAdditions(task, identityLinkEntities);
 
                     } else {
                         String strValue = value.toString();
                         if (StringUtils.isNotEmpty(strValue)) {
                             List<String> candidates = extractCandidates(strValue);
-                            List<IdentityLinkEntity> identityLinkEntities = CommandContextUtil.getIdentityLinkService().addCandidateUsers(task.getId(), candidates);
+                            List<IdentityLinkEntity> identityLinkEntities = CommandContextUtil.getIdentityLinkService().addCandidateUsers(task.getId(), candidates, task.getProcessInstanceId());
                             IdentityLinkUtil.handleTaskIdentityLinkAdditions(task, identityLinkEntities);
                         }
                         
@@ -345,14 +345,14 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
                         Iterator userIdSet = ((Collection) value).iterator();
                         while (userIdSet.hasNext()) {
                             IdentityLinkEntity identityLinkEntity = CommandContextUtil.getIdentityLinkService().createTaskIdentityLink(
-                                            task.getId(), userIdSet.next().toString(), null, customUserIdentityLinkType);
+                                            task.getId(), userIdSet.next().toString(), null, customUserIdentityLinkType, task.getProcessInstanceId());
                             IdentityLinkUtil.handleTaskIdentityLinkAddition(task, identityLinkEntity);
                         }
                         
                     } else {
                         List<String> userIds = extractCandidates(value.toString());
                         for (String userId : userIds) {
-                            IdentityLinkEntity identityLinkEntity = CommandContextUtil.getIdentityLinkService().createTaskIdentityLink(task.getId(), userId, null, customUserIdentityLinkType);
+                            IdentityLinkEntity identityLinkEntity = CommandContextUtil.getIdentityLinkService().createTaskIdentityLink(task.getId(), userId, null, customUserIdentityLinkType, task.getProcessInstanceId());
                             IdentityLinkUtil.handleTaskIdentityLinkAddition(task, identityLinkEntity);
                         }
                         
@@ -374,7 +374,7 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
                         Iterator groupIdSet = ((Collection) value).iterator();
                         while (groupIdSet.hasNext()) {
                             IdentityLinkEntity identityLinkEntity = CommandContextUtil.getIdentityLinkService().createTaskIdentityLink(
-                                            task.getId(), null, groupIdSet.next().toString(), customGroupIdentityLinkType);
+                                            task.getId(), null, groupIdSet.next().toString(), customGroupIdentityLinkType, task.getProcessInstanceId());
                             IdentityLinkUtil.handleTaskIdentityLinkAddition(task, identityLinkEntity);
                         }
                         
@@ -382,7 +382,7 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior {
                         List<String> groupIds = extractCandidates(value.toString());
                         for (String groupId : groupIds) {
                             IdentityLinkEntity identityLinkEntity = CommandContextUtil.getIdentityLinkService().createTaskIdentityLink(
-                                            task.getId(), null, groupId, customGroupIdentityLinkType);
+                                            task.getId(), null, groupId, customGroupIdentityLinkType, task.getProcessInstanceId());
                             IdentityLinkUtil.handleTaskIdentityLinkAddition(task, identityLinkEntity);
                         }
                         

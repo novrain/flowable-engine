@@ -46,19 +46,19 @@ public interface IdentityLinkEntityManager extends EntityManager<IdentityLinkEnt
     
     IdentityLinkEntity addScopeIdentityLink(String scopeDefinitionId, String scopeId, String scopeType, String userId, String groupId, String type);
 
-    IdentityLinkEntity addTaskIdentityLink(String taskId, String userId, String groupId, String type);
+    IdentityLinkEntity addTaskIdentityLink(String taskId, String userId, String groupId, String type, String processInstanceId);
 
     IdentityLinkEntity addProcessDefinitionIdentityLink(String processDefinitionId, String userId, String groupId);
     
     IdentityLinkEntity addScopeDefinitionIdentityLink(String scopeDefinitionId, String scopeType, String userId, String groupId);
 
-    IdentityLinkEntity addCandidateUser(String taskId, String userId);
+    IdentityLinkEntity addCandidateUser(String taskId, String userId, String processInstanceId);
 
-    List<IdentityLinkEntity> addCandidateUsers(String taskId, Collection<String> candidateUsers);
+    List<IdentityLinkEntity> addCandidateUsers(String taskId, Collection<String> candidateUsers, String processInstanceId);
 
-    IdentityLinkEntity addCandidateGroup(String taskId, String groupId);
+    IdentityLinkEntity addCandidateGroup(String taskId, String groupId, String processInstanceId);
 
-    List<IdentityLinkEntity> addCandidateGroups(String taskId, Collection<String> candidateGroups);
+    List<IdentityLinkEntity> addCandidateGroups(String taskId, Collection<String> candidateGroups, String processInstanceId);
 
     List<IdentityLinkEntity> deleteProcessInstanceIdentityLink(String processInstanceId, String userId, String groupId, String type);
     

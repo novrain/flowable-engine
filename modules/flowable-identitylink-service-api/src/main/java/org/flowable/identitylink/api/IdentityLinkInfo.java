@@ -14,7 +14,9 @@
 package org.flowable.identitylink.api;
 
 public interface IdentityLinkInfo {
-
+    
+    String getId();
+    
     /**
      * Returns the type of link. See for the native supported types.
      */
