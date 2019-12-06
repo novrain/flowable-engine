@@ -742,8 +742,8 @@ public class TaskQueryTest extends PluggableFlowableTestCase {
             assertEquals(3, taskService.getIdentityLinksForTask(adhocTask.getId()).size());
 
             assertEquals(1, taskService.createTaskQuery().taskId(adhocTask.getId()).taskInvolvedUser("gonzo").count());
-            assertEquals(1, taskService.createTaskQuery().taskId(adhocTask.getId()).taskInvolvedUser("kermit").count());
-            assertEquals(1, taskService.createTaskQuery().taskId(adhocTask.getId()).taskInvolvedUser("fozzie").count());
+            assertEquals(0, taskService.createTaskQuery().taskId(adhocTask.getId()).taskInvolvedUser("kermit").count());
+            assertEquals(0, taskService.createTaskQuery().taskId(adhocTask.getId()).taskInvolvedUser("fozzie").count());
 
         } finally {
             deleteAllTasks();
@@ -3166,7 +3166,7 @@ public class TaskQueryTest extends PluggableFlowableTestCase {
         assertNotNull(task.getIdentityLinks());
         assertEquals(1, task.getIdentityLinks().size());
         IdentityLinkInfo identityLink = task.getIdentityLinks().get(0);
-        assertNull(identityLink.getProcessInstanceId());
+        assertNotNull(identityLink.getProcessInstanceId());
         assertEquals("candidate", identityLink.getType());
         assertEquals("group1", identityLink.getGroupId());
         assertNull(identityLink.getUserId());

@@ -341,7 +341,7 @@ public class InstanceInvolvementTest extends PluggableFlowableTestCase {
 
         runtimeService.addGroupIdentityLink(processInstance.getId(), "testGroup", IdentityLinkType.PARTICIPANT);
 
-        assertEquals(0L, runtimeService.createProcessInstanceQuery().
+        assertEquals(1L, runtimeService.createProcessInstanceQuery().
             involvedUser("kermit").involvedGroups(Collections.singleton("testGroup")).count());
     }
 
@@ -352,7 +352,7 @@ public class InstanceInvolvementTest extends PluggableFlowableTestCase {
 
         runtimeService.addUserIdentityLink(processInstance.getId(), "kermit", IdentityLinkType.PARTICIPANT);
 
-        assertEquals(0L, runtimeService.createProcessInstanceQuery().
+        assertEquals(1L, runtimeService.createProcessInstanceQuery().
             involvedUser("kermit").involvedGroups(Collections.singleton("testGroup")).count());
     }
 
@@ -609,7 +609,7 @@ public class InstanceInvolvementTest extends PluggableFlowableTestCase {
         taskService.complete(taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult().getId());
 
         if (HistoryTestHelper.isHistoryLevelAtLeast(HistoryLevel.AUDIT, processEngineConfiguration)) {
-            assertEquals(0L, historyService.createHistoricProcessInstanceQuery().
+            assertEquals(1L, historyService.createHistoricProcessInstanceQuery().
                     involvedUser("kermit").involvedGroups(Collections.singleton("testGroup")).count());
         }
     }
@@ -622,7 +622,7 @@ public class InstanceInvolvementTest extends PluggableFlowableTestCase {
         taskService.complete(taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult().getId());
 
         if (HistoryTestHelper.isHistoryLevelAtLeast(HistoryLevel.AUDIT, processEngineConfiguration)) {
-            assertEquals(0L, historyService.createHistoricProcessInstanceQuery().
+            assertEquals(1L, historyService.createHistoricProcessInstanceQuery().
                     involvedUser("kermit").involvedGroups(Collections.singleton("testGroup")).count());
         }
     }
