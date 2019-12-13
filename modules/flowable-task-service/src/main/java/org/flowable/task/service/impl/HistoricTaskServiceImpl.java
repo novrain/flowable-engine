@@ -123,15 +123,16 @@ public class HistoricTaskServiceImpl extends CommonServiceImpl<TaskServiceConfig
             historicTaskInstance.setProcessDefinitionId(taskEntity.getProcessDefinitionId());
             historicTaskInstance.setClaimTime(taskEntity.getClaimTime());
             historicTaskInstance.setLastUpdateTime(changeTime);
+            historicTaskInstance.setProcessInstanceId(taskEntity.getProcessInstanceId());
 
             if (!Objects.equals(historicTaskInstance.getAssignee(), taskEntity.getAssignee())) {
                 historicTaskInstance.setAssignee(taskEntity.getAssignee());
-                createHistoricIdentityLink(historicTaskInstance.getId(), IdentityLinkType.ASSIGNEE, historicTaskInstance.getAssignee());
+                createHistoricIdentityLink(historicTaskInstance.getId(), IdentityLinkType.ASSIGNEE, historicTaskInstance.getAssignee(), historicTaskInstance.getProcessInstanceId());
             }
 
             if (!Objects.equals(historicTaskInstance.getOwner(), taskEntity.getOwner())) {
                 historicTaskInstance.setOwner(taskEntity.getOwner());
-                createHistoricIdentityLink(historicTaskInstance.getId(), IdentityLinkType.OWNER, historicTaskInstance.getOwner());
+                createHistoricIdentityLink(historicTaskInstance.getId(), IdentityLinkType.OWNER, historicTaskInstance.getOwner(), historicTaskInstance.getProcessInstanceId());
             }
         }
         return historicTaskInstance;
@@ -204,13 +205,14 @@ public class HistoricTaskServiceImpl extends CommonServiceImpl<TaskServiceConfig
         return configuration.getHistoricTaskLogEntryEntityManager();
     }
 
-    protected void createHistoricIdentityLink(String taskId, String type, String userId) {
+    protected void createHistoricIdentityLink(String taskId, String type, String userId, String processInstanceId) {
         HistoricIdentityLinkService historicIdentityLinkService =  CommandContextUtil.getHistoricIdentityLinkService();
         HistoricIdentityLinkEntity historicIdentityLinkEntity = historicIdentityLinkService.createHistoricIdentityLink();
         historicIdentityLinkEntity.setTaskId(taskId);
         historicIdentityLinkEntity.setType(type);
         historicIdentityLinkEntity.setUserId(userId);
         historicIdentityLinkEntity.setCreateTime(configuration.getClock().getCurrentTime());
+        historicIdentityLinkEntity.setProcessInstanceId(processInstanceId);
         historicIdentityLinkService.insertHistoricIdentityLink(historicIdentityLinkEntity, false);
     }
 
